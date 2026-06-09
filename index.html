@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="icon" type="image/svg+xml" href="images/logo-1.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="search-box">
+      <div id="input-sec">
+        <input placeholder="Enter the city" id="inp" onkeyup="betterfunc()" />
+        <ul class="suggestion"></ul>
+      </div>
+      <button id="search">Search</button>
+    </div>
+    <div class="container">
+      <input readonly class="timeStamp" />
+      <input readonly class="time" />
+      <input readonly class="cityName" />
+      <img class="weather-icon" src="images/clearr.svg" alt="" />
+      <input readonly class="temp" />
+      <input readonly class="bottom-Day" />
+      <div class="bottom-data">
+        <div class="other-info">
+          <img src="images/wind.svg" alt="" class="small-icon" />
+          <input readonly class="data" id="wind" />
+        </div>
+        <div class="other-info">
+          <img src="images/humidity.svg" alt="" class="small-icon" />
+          <input readonly class="data" id="humid" />
+        </div>
+      </div>
+    </div>
+    <script src="keys.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
