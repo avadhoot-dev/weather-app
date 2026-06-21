@@ -5,31 +5,59 @@
 }
 
 body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
+  font-family: "roboto", serif;
+}
+.dashboard {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  font-family: "roboto", serif;
-  justify-content: center;
-  min-height: 100vh;
-  background: #0f172a;
+  gap: 30px;
+
+  width: 1400px;
+  padding: 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.4);
+  border-radius: 32px;
 }
 .search-box {
-  position: fixed;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
+  justify-content: center;
   gap: 10px;
 }
+
+.main-section {
+  display: flex;
+  gap: 20px;
+}
+#map {
+  flex: 1;
+  height: 550px;
+  border-radius: 24px;
+
+  overflow: hidden;
+}
+.forecast-section {
+  height: 150px;
+
+  background: #1e293b;
+
+  border-radius: 24px;
+}
 .container {
-  width: 320px;
-  min-height: auto;
+  width: 350px;
+  min-height: 550px;
   padding: 20px;
   background: #1e293b;
   border-radius: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 }
 
 #input-sec {

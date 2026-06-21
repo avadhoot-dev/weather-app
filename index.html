@@ -12,36 +12,47 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   </head>
   <body>
-    <div class="search-box">
-      <div id="input-sec">
-        <input
-          placeholder="Enter any loc, pincode"
-          id="inp"
-          onkeyup="betterfunc()"
-        />
-        <ul class="suggestion"></ul>
-      </div>
-      <button id="search">Search</button>
-    </div>
-    <div class="container">
-      <input readonly class="timeStamp" />
-      <input readonly class="time" />
-      <input readonly class="cityName" />
-      <img class="weather-icon" src="images/clearr.svg" alt="" />
-      <input readonly class="temp" />
-      <input readonly class="bottom-Day" />
-      <div class="bottom-data">
-        <div class="other-info">
-          <img src="images/wind.svg" alt="" class="small-icon" />
-          <input readonly class="data" id="wind" />
+    <div class="dashboard">
+      <div class="search-box">
+        <div id="input-sec">
+          <input
+            placeholder="Enter any loc, pincode"
+            id="inp"
+            onkeyup="betterfunc()"
+          />
+          <ul class="suggestion"></ul>
         </div>
-        <div class="other-info">
-          <img src="images/humidity.svg" alt="" class="small-icon" />
-          <input readonly class="data" id="humid" />
+        <button id="search">Search</button>
+      </div>
+      <div class="main-section">
+        <div id="map"></div>
+        <div class="container">
+          <input readonly class="timeStamp" />
+          <input readonly class="time" />
+          <input readonly class="cityName" />
+          <img class="weather-icon" src="images/clearr.svg" alt="" />
+          <input readonly class="temp" />
+          <input readonly class="bottom-Day" />
+          <div class="bottom-data">
+            <div class="other-info">
+              <img src="images/wind.svg" alt="" class="small-icon" />
+              <input readonly class="data" id="wind" />
+            </div>
+            <div class="other-info">
+              <img src="images/humidity.svg" alt="" class="small-icon" />
+              <input readonly class="data" id="humid" />
+            </div>
+          </div>
         </div>
       </div>
+      <!-- <div class="forecast-section"></div> -->
     </div>
     <script type="module" src="JS/app.js"></script>
   </body>

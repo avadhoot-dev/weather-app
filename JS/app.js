@@ -12,7 +12,25 @@ const bottomDay = document.querySelector(".bottom-Day");
 const timeStamp = document.querySelector(".timeStamp");
 const disTime = document.querySelector(".time");
 let city = "";
+let marker;
+// map sec
+const map = L.map("map");
 
+map.setView([19.076, 72.8777], 10);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "© OpenStreetMap",
+}).addTo(map);
+
+map.on("click", function (e) {
+  const lat = e.latlng.lat;
+  const lon = e.latlng.lng;
+  if (marker) {
+    map.removeLayer(marker);
+  }
+  marker = L.marker(e.latlng).addTo(map);
+  getWeather(lat, lon);
+});
 // err msg ani handle
 
 function showMessage(message) {
@@ -85,6 +103,7 @@ async function getWeather(lat, lon) {
       throw new Error(`WeatherAPI HTTP ${response.status}`);
     }
     let tempData = await response.json();
+    // console.log(tempData);
     let conditionCode = tempData.current.condition.code;
     let iconFile = getWeatherIcon(conditionCode);
     if (tempData.error) {
@@ -94,12 +113,30 @@ async function getWeather(lat, lon) {
     tempDisplay.value = `${tempData.current.temp_c}°`;
     windDisplay.value = `${tempData.current.wind_kph}km/h`;
     humidDisplay.value = `${tempData.current.humidity}%`;
+    displayCity.value = tempData.location.name;
     weatherIcon.src = `images/${iconFile}`;
     sugg.innerHTML = "";
     sugg.style.visibility = "hidden";
   } catch (error) {
     showMessage(`⚠️ Error: ${error.message}`);
   }
+}
+
+// get curr loc data
+
+async function getCurrentLocation() {
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      map.setView([lat, lon], 10);
+      marker = L.marker([lat, lon]).addTo(map);
+      getWeather(lat, lon);
+    },
+    function () {
+      showMessage("⚠️ Unable to get location");
+    },
+  );
 }
 
 // search weather func
@@ -242,3 +279,6 @@ btn.addEventListener("click", function () {
 
 const betterfunc = debounce(getloc, 300);
 window.betterfunc = betterfunc;
+
+// calling getcurrloc function for allowing access of curr position
+getCurrentLocation();
