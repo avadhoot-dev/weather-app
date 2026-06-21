@@ -1,4 +1,5 @@
 import { getWeatherIcon, debounce } from "./utility.js";
+import { GEO_APIFY, WEATHER_API } from "./keys.js";
 let tempDisplay = document.querySelector(".temp");
 let windDisplay = document.querySelector("#wind");
 let humidDisplay = document.querySelector("#humid");
@@ -77,7 +78,7 @@ const loopDateTime = setInterval(getDateTime, 1000);
 // get weather func
 
 async function getWeather(lat, lon) {
-  const weaURL = `https://api.weatherapi.com/v1/current.json?key=dc7df9bcdbc7436cabc81413260906&q=${lat},${lon}`;
+  const weaURL = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API}&q=${lat},${lon}`;
   try {
     let response = await fetch(weaURL);
     if (!response.ok) {
@@ -105,7 +106,7 @@ async function getWeather(lat, lon) {
 
 async function searchWeather() {
   city = input.value.trim();
-  const geoCoding = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(city)}&filter=countrycode:in&limit=10&apiKey=28a0150a033c4cf4a0b18483c1d59b0b`;
+  const geoCoding = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(city)}&filter=countrycode:in&limit=10&apiKey=${GEO_APIFY}`;
   const isPincode = /^\d{6}$/.test(city);
   try {
     let res = await fetch(geoCoding);
@@ -138,7 +139,7 @@ const getloc = async () => {
   if (city === "") {
     return;
   }
-  const geoCoding = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(city)}&filter=countrycode:in&limit=20&apiKey=28a0150a033c4cf4a0b18483c1d59b0b`;
+  const geoCoding = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(city)}&filter=countrycode:in&limit=20&apiKey=${GEO_APIFY}`;
   let geoData;
 
   try {
