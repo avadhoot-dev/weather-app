@@ -34,26 +34,87 @@
       <div class="main-section">
         <div id="map"></div>
         <div class="container">
-          <input readonly class="timeStamp" />
-          <input readonly class="time" />
-          <input readonly class="cityName" />
-          <img class="weather-icon" src="images/clearr.svg" alt="" />
-          <input readonly class="temp" />
-          <input readonly class="bottom-Day" />
+          <div class="top-section">
+            <div class="location-row">
+              <img src="images/loc-pointer.svg" alt="" id="pointer" />
+              <h2 class="cityName"></h2>
+            </div>
+
+            <div class="temp-section">
+              <div class="temp-left">
+                <div class="temp"></div>
+                <p class="condition"></p>
+              </div>
+
+              <div class="temp-right">
+                <div class="high-low">
+                  <p class="high-temp"></p>
+                  <p class="low-temp"></p>
+                </div>
+                <img class="weather-icon" src="images/clearr.svg" alt="" />
+              </div>
+            </div>
+
+            <div class="date-time">
+              <div class="date-row">
+                <img
+                  src="images/calender-icon.svg"
+                  alt=""
+                  class="date-time-icon"
+                />
+                <p class="timeStamp"></p>
+              </div>
+              <div class="time-row">
+                <img
+                  src="images/clock-icon.svg"
+                  alt=""
+                  class="date-time-icon"
+                />
+                <p class="time"></p>
+              </div>
+            </div>
+          </div>
+
           <div class="bottom-data">
             <div class="other-info">
               <img src="images/wind.svg" alt="" class="small-icon" />
+              <p>Wind</p>
               <input readonly class="data" id="wind" />
             </div>
             <div class="other-info">
               <img src="images/humidity.svg" alt="" class="small-icon" />
+              <p>Humidity</p>
               <input readonly class="data" id="humid" />
             </div>
+            <div class="other-info">
+              <img src="images/sun-icon.svg" alt="" class="small-icon" />
+              <p>UV Index</p>
+              <input readonly class="data" id="UV" />
+            </div>
+            <div class="other-info">
+              <img src="images/pressure-icon.svg" alt="" class="small-icon" />
+              <p>Pressure</p>
+              <input readonly class="data" id="pressure" />
+            </div>
+            <div class="other-info">
+              <img src="images/eye-icon.svg" alt="" class="small-icon" />
+              <p>Visibility</p>
+              <input readonly class="data" id="visibility" />
+            </div>
+            <div class="other-info">
+              <img src="images/rain-icon.svg" alt="" class="small-icon" />
+              <p>Rain %</p>
+              <input readonly class="data" id="rain-chance" />
+            </div>
+          </div>
+          <div class="update-data">
+            <p id="last-update"></p>
           </div>
         </div>
       </div>
-      <!-- <div class="forecast-section"></div> -->
+      <div class="forecast-section"></div>
     </div>
+
     <script type="module" src="JS/app.js"></script>
   </body>
 </html>

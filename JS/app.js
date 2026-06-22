@@ -3,34 +3,52 @@ import { GEO_APIFY, WEATHER_API } from "./keys.js";
 let tempDisplay = document.querySelector(".temp");
 let windDisplay = document.querySelector("#wind");
 let humidDisplay = document.querySelector("#humid");
+let uv_index = document.querySelector("#UV");
+let pressure = document.querySelector("#pressure");
+let visibility = document.querySelector("#visibility");
+let rain_chance = document.querySelector("#rain-chance");
 let displayCity = document.querySelector(".cityName");
 const input = document.getElementById("inp");
 const btn = document.getElementById("search");
 const weatherIcon = document.querySelector(".weather-icon");
 const sugg = document.querySelector(".suggestion");
-const bottomDay = document.querySelector(".bottom-Day");
+const last_update = document.querySelector("#last-update");
 const timeStamp = document.querySelector(".timeStamp");
 const disTime = document.querySelector(".time");
+const conditionDisplay = document.querySelector(".condition");
+const highTemp = document.querySelector(".high-temp");
+const lowTemp = document.querySelector(".low-temp");
 let city = "";
 let marker;
 // map sec
 const map = L.map("map");
 
 map.setView([19.076, 72.8777], 10);
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: "© OpenStreetMap",
-}).addTo(map);
+L.tileLayer(
+  "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+  {
+    maxZoom: 20,
+    attribution: "&copy; Stadia Maps & OpenStreetMap contributors",
+  },
+).addTo(map);
 
 map.on("click", function (e) {
   const lat = e.latlng.lat;
   const lon = e.latlng.lng;
+
+  updateMapMarker(lat, lon);
+  getWeather(lat, lon);
+});
+// map function
+
+function updateMapMarker(lat, lon, zoom = 10) {
   if (marker) {
     map.removeLayer(marker);
   }
-  marker = L.marker(e.latlng).addTo(map);
-  getWeather(lat, lon);
-});
+  marker = L.marker([lat, lon]).addTo(map);
+  map.setView([lat, lon], zoom);
+}
+
 // err msg ani handle
 
 function showMessage(message) {
@@ -74,8 +92,7 @@ function getDateTime() {
   let date = d.getDate();
   let month = months[d.getMonth()];
 
-  timeStamp.value = `${day}, ${date} ${month}`;
-  bottomDay.value = `${day}`;
+  timeStamp.textContent = `${day}, ${date} ${month}`;
 
   let hrs = d.getHours();
   let min = d.getMinutes();
@@ -86,7 +103,7 @@ function getDateTime() {
   if (min < 10) {
     min = `0${min}`;
   }
-  disTime.value = `${hrs}:${min}`;
+  disTime.textContent = `${hrs}:${min}`;
 }
 
 getDateTime();
@@ -96,24 +113,35 @@ const loopDateTime = setInterval(getDateTime, 1000);
 // get weather func
 
 async function getWeather(lat, lon) {
-  const weaURL = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API}&q=${lat},${lon}`;
+  const weaURL = `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API}&q=${lat},${lon}&days=1`;
   try {
     let response = await fetch(weaURL);
     if (!response.ok) {
       throw new Error(`WeatherAPI HTTP ${response.status}`);
     }
     let tempData = await response.json();
-    // console.log(tempData);
+
+    console.log(tempData);
     let conditionCode = tempData.current.condition.code;
     let iconFile = getWeatherIcon(conditionCode);
     if (tempData.error) {
       showMessage(`⚠️ ${tempData.error.message}`);
       return;
     }
-    tempDisplay.value = `${tempData.current.temp_c}°`;
+    tempDisplay.textContent = `${tempData.current.temp_c}°`;
+    highTemp.textContent = `H: ${tempData.forecast.forecastday[0].day.maxtemp_c}°`;
+    lowTemp.textContent = `L: ${tempData.forecast.forecastday[0].day.mintemp_c}°`;
     windDisplay.value = `${tempData.current.wind_kph}km/h`;
     humidDisplay.value = `${tempData.current.humidity}%`;
-    displayCity.value = tempData.location.name;
+    uv_index.value = `${tempData.current.uv}`;
+    pressure.value = `${tempData.current.pressure_mb} mb`;
+    visibility.value = `${tempData.current.vis_km} km`;
+    rain_chance.value = `${tempData.current.chance_of_rain}`;
+    last_update.textContent = `Last updated: ${tempData.current.last_updated.split(" ")[1]}`;
+    if (!input.value.trim()) {
+      displayCity.textContent = `${tempData.location.name}, ${tempData.location.region}`;
+    }
+    conditionDisplay.textContent = tempData.current.condition.text;
     weatherIcon.src = `images/${iconFile}`;
     sugg.innerHTML = "";
     sugg.style.visibility = "hidden";
@@ -129,8 +157,7 @@ async function getCurrentLocation() {
     function (position) {
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
-      map.setView([lat, lon], 10);
-      marker = L.marker([lat, lon]).addTo(map);
+      updateMapMarker(lat, lon);
       getWeather(lat, lon);
     },
     function () {
@@ -144,7 +171,7 @@ async function getCurrentLocation() {
 async function searchWeather() {
   city = input.value.trim();
   const geoCoding = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(city)}&filter=countrycode:in&limit=10&apiKey=${GEO_APIFY}`;
-  const isPincode = /^\d{6}$/.test(city);
+  // const isPincode = /^\d{6}$/.test(city);
   try {
     let res = await fetch(geoCoding);
     if (!res.ok) {
@@ -162,7 +189,8 @@ async function searchWeather() {
     let feature = geoData.features[0];
     let lat = feature.geometry.coordinates[1];
     let lon = feature.geometry.coordinates[0];
-    displayCity.value = feature.properties.formatted;
+    displayCity.textContent = feature.properties.formatted;
+    updateMapMarker(lat, lon);
     await getWeather(lat, lon);
   } catch (error) {
     showMessage(`⚠️ ${error.message}`);
@@ -246,10 +274,11 @@ const getloc = async () => {
         sugg.innerHTML = "";
         sugg.style.visibility = "hidden";
         input.value = mainName;
-        displayCity.value =
+        displayCity.textContent =
           feature.properties.suburb || feature.properties.formatted;
         let lat = feature.geometry.coordinates[1];
         let lon = feature.geometry.coordinates[0];
+        updateMapMarker(lat, lon);
         getWeather(lat, lon);
       });
     });
@@ -268,7 +297,7 @@ btn.addEventListener("click", function () {
     tempDisplay.value = "";
     windDisplay.value = "";
     humidDisplay.value = "";
-    displayCity.value = "";
+    displayCity.textContent = "";
     return;
   } else {
     searchWeather();
