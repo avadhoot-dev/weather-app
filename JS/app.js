@@ -32,13 +32,10 @@ let marker;
 const map = L.map("map");
 
 map.setView([19.076, 72.8777], 10);
-L.tileLayer(
-  "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
-  {
-    maxZoom: 20,
-    attribution: "&copy; Stadia Maps & OpenStreetMap contributors",
-  },
-).addTo(map);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "&copy; OpenStreetMap contributors",
+}).addTo(map);
 
 map.on("click", function (e) {
   const lat = e.latlng.lat;
