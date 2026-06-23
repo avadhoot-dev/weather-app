@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="icon" type="image/svg+xml" href="images/logo-1.svg" />
+    <title>SkyCast</title>
+    <link rel="icon" type="image/svg+xml" href="images/app-logo.svg" />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,7 +19,12 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   </head>
   <body>
-    <div class="dashboard">
+    <nav class="nav-bar">
+      <div class="brand">
+        <img src="images/app-logo.svg" alt="" id="logo" />
+        <h1>SkyCast</h1>
+      </div>
+      <!-- search bar -->
       <div class="search-box">
         <div id="input-sec">
           <input
@@ -31,6 +36,14 @@
         </div>
         <button id="search">Search</button>
       </div>
+      <!-- toogle opt -->
+      <div class="nav-actions">
+        <div class="unit-toggle">
+          <button id="unit-btn">°C</button>
+        </div>
+      </div>
+    </nav>
+    <div class="dashboard">
       <div class="main-section">
         <div id="map"></div>
         <div class="container">
@@ -112,9 +125,11 @@
           </div>
         </div>
       </div>
-      <div class="forecast-section"></div>
+      <!-- <div class="forecast-section"></div> -->
     </div>
-
+    <footer class="footer">
+      <p>Stay Informed Stay Prepared | © All Rights Reserved</p>
+    </footer>
     <script type="module" src="JS/app.js"></script>
   </body>
 </html>

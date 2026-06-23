@@ -18,7 +18,15 @@ const disTime = document.querySelector(".time");
 const conditionDisplay = document.querySelector(".condition");
 const highTemp = document.querySelector(".high-temp");
 const lowTemp = document.querySelector(".low-temp");
+const unitBtn = document.getElementById("unit-btn");
 let city = "";
+let tempC;
+let tempF;
+let maxC;
+let maxF;
+let minC;
+let minF;
+let unit = "C";
 let marker;
 // map sec
 const map = L.map("map");
@@ -128,6 +136,13 @@ async function getWeather(lat, lon) {
       showMessage(`⚠️ ${tempData.error.message}`);
       return;
     }
+    tempC = tempData.current.temp_c;
+    tempF = tempData.current.temp_f;
+    maxC = tempData.forecast.forecastday[0].day.maxtemp_c;
+    maxF = tempData.forecast.forecastday[0].day.maxtemp_f;
+
+    minC = tempData.forecast.forecastday[0].day.mintemp_c;
+    minF = tempData.forecast.forecastday[0].day.mintemp_f;
     tempDisplay.textContent = `${tempData.current.temp_c}°`;
     highTemp.textContent = `H: ${tempData.forecast.forecastday[0].day.maxtemp_c}°`;
     lowTemp.textContent = `L: ${tempData.forecast.forecastday[0].day.mintemp_c}°`;
@@ -305,7 +320,29 @@ btn.addEventListener("click", function () {
     sugg.innerHTML = "";
   }
 });
+unitBtn.addEventListener("click", function () {
+  if (unit === "C") {
+    tempDisplay.textContent = `${tempF}°`;
 
+    highTemp.textContent = `H: ${maxF}°`;
+
+    lowTemp.textContent = `L: ${minF}°`;
+
+    unit = "F";
+
+    unitBtn.textContent = "°F";
+  } else {
+    tempDisplay.textContent = `${tempC}°`;
+
+    highTemp.textContent = `H: ${maxC}°`;
+
+    lowTemp.textContent = `L: ${minC}°`;
+
+    unit = "C";
+
+    unitBtn.textContent = "°C";
+  }
+});
 const betterfunc = debounce(getloc, 300);
 window.betterfunc = betterfunc;
 
