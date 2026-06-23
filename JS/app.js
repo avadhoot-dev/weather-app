@@ -1,5 +1,5 @@
 import { getWeatherIcon, debounce } from "./utility.js";
-import { GEO_APIFY, WEATHER_API } from "./keys.js";
+
 let tempDisplay = document.querySelector(".temp");
 let windDisplay = document.querySelector("#wind");
 let humidDisplay = document.querySelector("#humid");
@@ -121,7 +121,7 @@ const loopDateTime = setInterval(getDateTime, 1000);
 // get weather func
 
 async function getWeather(lat, lon) {
-  const weaURL = `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API}&q=${lat},${lon}&days=1`;
+  const weaURL = `/api/weather?lat=${lat}&lon=${lon}`;
   try {
     let response = await fetch(weaURL);
     if (!response.ok) {
@@ -185,7 +185,7 @@ async function getCurrentLocation() {
 
 async function searchWeather() {
   city = input.value.trim();
-  const geoCoding = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(city)}&filter=countrycode:in&limit=10&apiKey=${GEO_APIFY}`;
+  const geoCoding = `/api/geo?text=${encodeURIComponent(city)}`;
   // const isPincode = /^\d{6}$/.test(city);
   try {
     let res = await fetch(geoCoding);
@@ -219,7 +219,7 @@ const getloc = async () => {
   if (city === "") {
     return;
   }
-  const geoCoding = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(city)}&filter=countrycode:in&limit=20&apiKey=${GEO_APIFY}`;
+  const geoCoding = `/api/autocomplete?text=${encodeURIComponent(city)}`;
   let geoData;
 
   try {
