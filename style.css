@@ -338,9 +338,12 @@ body {
 }
 
 .hr-card {
-  border: 1px solid red;
+  width: 40px;
+  padding: 5px;
+  align-items: center;
+  border: none;
   border-radius: 8px;
-  background: transparent;
+  background: #293445;
   color: white;
 }
 .hr-card p {
@@ -356,4 +359,8 @@ footer {
 footer p {
   color: #94a3b8;
   font-size: 14px;
+}
+footer h2 {
+  color: #94a3b8;
+  font-size: 16px;
 }
