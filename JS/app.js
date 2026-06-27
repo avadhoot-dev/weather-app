@@ -51,7 +51,7 @@ function updateMapMarker(lat, lon, zoom = 10) {
     map.removeLayer(marker);
   }
   marker = L.marker([lat, lon]).addTo(map);
-  map.setView([lat, lon], zoom);
+  map.setView([lat, lon], map.getZoom());
 }
 
 // err msg ani handle
@@ -127,12 +127,12 @@ async function getWeather(lat, lon) {
     let tempData = await response.json();
 
     console.log(tempData);
-    let conditionCode = tempData.current.condition.code;
-    let iconFile = getWeatherIcon(conditionCode);
     if (tempData.error) {
       showMessage(`⚠️ ${tempData.error.message}`);
       return;
     }
+    let conditionCode = tempData.current.condition.code;
+    let iconFile = getWeatherIcon(conditionCode);
     tempC = tempData.current.temp_c;
     tempF = tempData.current.temp_f;
     maxC = tempData.forecast.forecastday[0].day.maxtemp_c;
@@ -150,9 +150,13 @@ async function getWeather(lat, lon) {
     visibility.value = `${tempData.current.vis_km} km`;
     rain_chance.value = `${tempData.current.chance_of_rain}`;
     last_update.textContent = `Last updated: ${tempData.current.last_updated.split(" ")[1]}`;
-    if (!input.value.trim()) {
-      displayCity.textContent = `${tempData.location.name}, ${tempData.location.region}`;
-    }
+    console.log(
+      "Weather API Location:",
+      tempData.location.name,
+      tempData.location.region,
+    );
+    displayCity.textContent = `${tempData.location.name}, ${tempData.location.region}`;
+    console.log(displayCity.textContent);
     conditionDisplay.textContent = tempData.current.condition.text;
     weatherIcon.src = `images/${iconFile}`;
     sugg.innerHTML = "";

@@ -1,12 +1,20 @@
+// export default async function handler(req, res) {
+//   const lat = req.query.lat;
+//   const lon = req.query.lon;
+
+//   const response = await fetch(
+//     `https://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHER_API}&q=${lat},${lon}&days=1`,
+//   );
+
+//   const data = await response.json();
+
+//   res.status(200).json(data);
+// }
+// console.log(process.env.WEATHER_API);
 export default async function handler(req, res) {
-  const lat = req.query.lat;
-  const lon = req.query.lon;
+  console.log("WEATHER_API:", process.env.WEATHER_API);
 
-  const response = await fetch(
-    `https://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHER_API}&q=${lat},${lon}&days=1`,
-  );
-
-  const data = await response.json();
-
-  res.status(200).json(data);
+  res.status(200).json({
+    key: process.env.WEATHER_API,
+  });
 }
