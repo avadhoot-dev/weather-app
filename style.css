@@ -337,6 +337,15 @@ body {
   font-size: 13px;
 }
 
+.hr-card {
+  border: 1px solid red;
+  border-radius: 8px;
+  background: transparent;
+  color: white;
+}
+.hr-card p {
+  font-size: 15px;
+}
 footer {
   margin-top: 40px;
   padding: 20px 0;

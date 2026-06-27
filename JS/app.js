@@ -113,7 +113,7 @@ function getDateTime() {
 
 getDateTime();
 
-const loopDateTime = setInterval(getDateTime, 1000);
+setInterval(getDateTime, 1000);
 
 // get weather func
 
@@ -150,13 +150,9 @@ async function getWeather(lat, lon) {
     visibility.value = `${tempData.current.vis_km} km`;
     rain_chance.value = `${tempData.current.chance_of_rain}`;
     last_update.textContent = `Last updated: ${tempData.current.last_updated.split(" ")[1]}`;
-    console.log(
-      "Weather API Location:",
-      tempData.location.name,
-      tempData.location.region,
-    );
+
     displayCity.textContent = `${tempData.location.name}, ${tempData.location.region}`;
-    console.log(displayCity.textContent);
+
     conditionDisplay.textContent = tempData.current.condition.text;
     weatherIcon.src = `images/${iconFile}`;
     sugg.innerHTML = "";
