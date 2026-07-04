@@ -337,17 +337,91 @@ body {
   font-size: 13px;
 }
 
-.hr-card {
-  width: 40px;
+.hourly-forecast {
+  margin-top: 20px;
+  width: 100%;
+  background: #1e293b;
+  padding: 10px;
+  border-radius: 18px;
+  justify-content: center;
+}
+.def-info {
+  text-align: left;
+  color: #cccccc;
   padding: 5px;
+  font-size: 18px;
+}
+.hourly-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 5px;
+  scrollbar-width: none;
+}
+.hourly-container::-webkit-scrollbar {
+  display: none;
+}
+.hr-card {
+  min-width: 90px;
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+   justify-content: flex-start;
+    padding: 10px 12px 12px;
+    gap: 8px;
   align-items: center;
-  border: none;
-  border-radius: 8px;
-  background: #293445;
+  background: #243244;
+
+  border: 1px solid rgba(255,255,255,.12);
+    transition: .2s ease;
+  border-radius: 16px;
   color: white;
 }
-.hr-card p {
-  font-size: 15px;
+.hr-card:hover {
+  transform: translateY(-3px);
+  transition: 0.2s;
+  border-color: rgba(255,255,255,.25);
+}
+.now-card {
+  border-radius: 10px;
+   border: 2px solid #4480ED;
+    box-shadow: 0 0 20px rgba(68,128,237,.45);
+  
+}
+.now-text{
+    background-color: #4480ED;
+    color: white;
+    border-radius: 999px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    display: inline-block;
+    margin-bottom: 6px;
+}
+.hourly-time-text {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.hourly-icon {
+  width: 52px;
+  height: 52px;
+}
+.hourly-temp {
+  margin-top: -2px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+
+.hourly-rain{
+    font-size:12px;
+    color:#60A5FA;
+    font-weight:500;
+    margin-top: 6px;
+    margin-bottom: 8px;
 }
 footer {
   margin-top: 40px;
@@ -359,8 +433,4 @@ footer {
 footer p {
   color: #94a3b8;
   font-size: 14px;
-}
-footer h2 {
-  color: #94a3b8;
-  font-size: 16px;
 }

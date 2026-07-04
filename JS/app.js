@@ -19,6 +19,7 @@ const conditionDisplay = document.querySelector(".condition");
 const highTemp = document.querySelector(".high-temp");
 const lowTemp = document.querySelector(".low-temp");
 const unitBtn = document.getElementById("unit-btn");
+const hourlyContainer = document.querySelector(".hourly-container");
 let city = "";
 let tempC;
 let tempF;
@@ -26,6 +27,7 @@ let maxC;
 let maxF;
 let minC;
 let minF;
+let weatherData;
 let unit = "C";
 let marker;
 // map sec
@@ -115,6 +117,73 @@ getDateTime();
 
 setInterval(getDateTime, 1000);
 
+//hourly forecast function
+
+async function hourlyForecast(tempData) {
+  //hourly forecast
+  hourlyContainer.innerHTML = "";
+  const currentHour = new Date().getHours();
+  for (
+    let i = currentHour;
+    i < tempData.forecast.forecastday[0].hour.length;
+    i++
+  ) {
+    let hour = tempData.forecast.forecastday[0].hour[i];
+    let card = document.createElement("div");
+    card.classList.add("hr-card");
+    let time = document.createElement("p");
+    let icon = document.createElement("img");
+    let temp = document.createElement("p");
+    let rain = document.createElement("p");
+    let time24 = hour.time.split(" ")[1];
+    let hourOnly = parseInt(time24.split(":")[0]);
+    if (i === currentHour) {
+      hourOnly = "Now";
+
+      card.classList.add("now-card");
+      time.classList.add("now-text");
+    } else {
+      if (hourOnly == 0) {
+        hourOnly = "12 am";
+      }
+      if (hourOnly >= 1 && hourOnly <= 11) {
+        hourOnly = `${hourOnly} am`;
+      }
+      if (hourOnly == 12) {
+        hourOnly = "12 pm";
+      }
+      if (hourOnly >= 13 && hourOnly <= 23) {
+        hourOnly = `${hourOnly - 12} pm`;
+      }
+    }
+    time.textContent = `${hourOnly}`;
+    icon.src = `https:${hour.condition.icon}`;
+    icon.classList.add("hourly-icon");
+    time.classList.add("hourly-time-text");
+    temp.classList.add("hourly-temp");
+    rain.classList.add("hourly-rain");
+    if (i === currentHour) {
+    if (unit === "C") {
+        temp.textContent = `${tempData.current.temp_c}°`;
+    } else {
+        temp.textContent = `${tempData.current.temp_f}°`;
+    }
+} else {
+    if (unit === "C") {
+        temp.textContent = `${hour.temp_c}°`;
+    } else {
+        temp.textContent = `${hour.temp_f}°`;
+    }
+}
+    rain.textContent = `${hour.chance_of_rain}%`;
+    card.appendChild(time);
+    card.appendChild(icon);
+    card.appendChild(temp);
+    card.appendChild(rain);
+    hourlyContainer.appendChild(card);
+  }
+}
+
 // get weather func
 
 async function getWeather(lat, lon) {
@@ -125,8 +194,9 @@ async function getWeather(lat, lon) {
       throw new Error(`WeatherAPI HTTP ${response.status}`);
     }
     let tempData = await response.json();
-
+    weatherData = tempData;
     console.log(tempData);
+    console.log(tempData.forecast.forecastday[0].hour);
     if (tempData.error) {
       showMessage(`⚠️ ${tempData.error.message}`);
       return;
@@ -154,6 +224,7 @@ async function getWeather(lat, lon) {
     displayCity.textContent = `${tempData.location.name}, ${tempData.location.region}`;
 
     conditionDisplay.textContent = tempData.current.condition.text;
+    hourlyForecast(tempData);
     weatherIcon.src = `images/${iconFile}`;
     sugg.innerHTML = "";
     sugg.style.visibility = "hidden";
@@ -326,6 +397,7 @@ unitBtn.addEventListener("click", function () {
     lowTemp.textContent = `L: ${minF}°`;
 
     unit = "F";
+    hourlyForecast(weatherData)
 
     unitBtn.textContent = "°F";
   } else {
@@ -336,7 +408,7 @@ unitBtn.addEventListener("click", function () {
     lowTemp.textContent = `L: ${minC}°`;
 
     unit = "C";
-
+hourlyForecast(weatherData)
     unitBtn.textContent = "°C";
   }
 });
