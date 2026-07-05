@@ -164,17 +164,17 @@ async function hourlyForecast(tempData) {
     rain.classList.add("hourly-rain");
     if (i === currentHour) {
     if (unit === "C") {
-        temp.textContent = `${tempData.current.temp_c}°`;
+        temp.textContent = `${parseInt(tempData.current.temp_c)}°`;
+      } else {
+        temp.textContent = `${parseInt(tempData.current.temp_f)}°`;
+      }
     } else {
-        temp.textContent = `${tempData.current.temp_f}°`;
-    }
-} else {
-    if (unit === "C") {
-        temp.textContent = `${hour.temp_c}°`;
+      if (unit === "C") {
+        temp.textContent = `${parseInt(hour.temp_c)}°`;
     } else {
-        temp.textContent = `${hour.temp_f}°`;
+      temp.textContent = `${parseInt(hour.temp_f)}°`;
     }
-}
+  }
     rain.textContent = `${hour.chance_of_rain}%`;
     card.appendChild(time);
     card.appendChild(icon);
