@@ -120,15 +120,18 @@ setInterval(getDateTime, 1000);
 //hourly forecast function
 
 async function hourlyForecast(tempData) {
-  //hourly forecast
   hourlyContainer.innerHTML = "";
   const currentHour = new Date().getHours();
+  const hours = [
+  ...tempData.forecast.forecastday[0].hour,
+  ...tempData.forecast.forecastday[1].hour,
+];
   for (
     let i = currentHour;
-    i < tempData.forecast.forecastday[0].hour.length;
+    i < currentHour + 24;
     i++
   ) {
-    let hour = tempData.forecast.forecastday[0].hour[i];
+    let hour = hours[i];
     let card = document.createElement("div");
     card.classList.add("hr-card");
     let time = document.createElement("p");
@@ -163,7 +166,7 @@ async function hourlyForecast(tempData) {
     temp.classList.add("hourly-temp");
     rain.classList.add("hourly-rain");
     if (i === currentHour) {
-    if (unit === "C") {
+      if (unit === "C") {
         temp.textContent = `${parseInt(tempData.current.temp_c)}°`;
       } else {
         temp.textContent = `${parseInt(tempData.current.temp_f)}°`;
@@ -171,10 +174,10 @@ async function hourlyForecast(tempData) {
     } else {
       if (unit === "C") {
         temp.textContent = `${parseInt(hour.temp_c)}°`;
-    } else {
-      temp.textContent = `${parseInt(hour.temp_f)}°`;
+      } else {
+        temp.textContent = `${parseInt(hour.temp_f)}°`;
+      }
     }
-  }
     rain.textContent = `${hour.chance_of_rain}%`;
     card.appendChild(time);
     card.appendChild(icon);
@@ -397,7 +400,7 @@ unitBtn.addEventListener("click", function () {
     lowTemp.textContent = `L: ${minF}°`;
 
     unit = "F";
-    hourlyForecast(weatherData)
+    hourlyForecast(weatherData);
 
     unitBtn.textContent = "°F";
   } else {
@@ -408,7 +411,7 @@ unitBtn.addEventListener("click", function () {
     lowTemp.textContent = `L: ${minC}°`;
 
     unit = "C";
-hourlyForecast(weatherData)
+    hourlyForecast(weatherData);
     unitBtn.textContent = "°C";
   }
 });
