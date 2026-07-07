@@ -52,41 +52,29 @@
               <img src="images/loc-pointer.svg" alt="" id="pointer" />
               <h2 class="cityName"></h2>
             </div>
-            <div class="temp-section">
-              <div class="temp-left">
-                <div class="temp"></div>
-                <p class="condition"></p>
-              </div>
-
-              <div class="temp-right">
-                <div class="high-low">
-                  <p class="high-temp"></p>
-                  <p class="low-temp"></p>
-                </div>
-                <img class="weather-icon" src="images/clearr.svg" alt="" />
-              </div>
-            </div>
-
             <div class="date-time">
               <div class="date-row">
-                <img
-                  src="images/calender-icon.svg"
-                  alt=""
-                  class="date-time-icon"
-                />
                 <p class="timeStamp"></p>
               </div>
               <div class="time-row">
-                <img
-                  src="images/clock-icon.svg"
-                  alt=""
-                  class="date-time-icon"
-                />
                 <p class="time"></p>
               </div>
             </div>
+           <div class="temp-section">
+    <div class="temp"></div>
+    <img class="weather-icon">
+</div>
+            <p class="condition"></p>
+                <p class="feels-like"></p>
+             <div class="high-low">
+            <p class="high-temp"></p>
+            <p class="low-temp"></p>
           </div>
+          </div>
+         
+        </div>
 
+        <div class="details-1">
           <div class="bottom-data">
             <div class="other-info">
               <img src="images/wind.svg" alt="" class="small-icon" />
@@ -118,21 +106,32 @@
               <p>Rain %</p>
               <input readonly class="data" id="rain-chance" />
             </div>
-          </div>
-          <div class="update-data">
-            <p id="last-update"></p>
+            <div class="other-info">
+              <img src="images/cloud-cover.svg" alt="" class="small-icon" />
+              <p>Cloud Cover</p>
+              <input readonly class="data" id="cloud-cover" />
+            </div>
+            <div class="other-info">
+              <img src="images/dew-point.svg" alt="" class="small-icon" />
+              <p>Dew Point</p>
+              <input readonly class="data" id="dew-point" />
+            </div>
           </div>
         </div>
       </div>
       <div class="hourly-forecast">
-        <h3 class="def-info">Hourly Forecast</h3>
-        <div class="hourly-container">
+        <h3 class="def-info">🕓 Hourly Forecast</h3>
+        <div class="hourly-container"></div>
+      </div>
        
-        </div>
-      </div> 
     </div>
     <footer class="footer">
-      <p>Stay Informed Stay Prepared | © All Rights Reserved</p>
+      
+        <p>Stay Informed Stay Prepared | © All Rights Reserved</p>
+        
+          <p id="last-update"></p>
+      
+      
     </footer>
     <script type="module" src="JS/app.js"></script>
   </body>

@@ -19,6 +19,9 @@ const conditionDisplay = document.querySelector(".condition");
 const highTemp = document.querySelector(".high-temp");
 const lowTemp = document.querySelector(".low-temp");
 const unitBtn = document.getElementById("unit-btn");
+const feels_like = document.querySelector(".feels-like");
+const dew_point = document.querySelector("#dew-point")
+const cloud_cover = document.querySelector("#cloud-cover")
 const hourlyContainer = document.querySelector(".hourly-container");
 let city = "";
 let tempC;
@@ -213,7 +216,7 @@ async function getWeather(lat, lon) {
 
     minC = tempData.forecast.forecastday[0].day.mintemp_c;
     minF = tempData.forecast.forecastday[0].day.mintemp_f;
-    tempDisplay.textContent = `${tempData.current.temp_c}°`;
+    tempDisplay.textContent = `${tempData.current.temp_c}°ᶜ`;
     highTemp.textContent = `H: ${tempData.forecast.forecastday[0].day.maxtemp_c}°`;
     lowTemp.textContent = `L: ${tempData.forecast.forecastday[0].day.mintemp_c}°`;
     windDisplay.value = `${tempData.current.wind_kph}km/h`;
@@ -225,10 +228,18 @@ async function getWeather(lat, lon) {
     last_update.textContent = `Last updated: ${tempData.current.last_updated.split(" ")[1]}`;
 
     displayCity.textContent = `${tempData.location.name}, ${tempData.location.region}`;
-
     conditionDisplay.textContent = tempData.current.condition.text;
+    if(unit === "C"){
+      feels_like.textContent = `Feels like: ${parseInt(tempData.current.feelslike_c)}°C`;
+      dew_point.value = `${parseInt(tempData.current.dewpoint_c)}°C`;
+    }else{
+      feels_like.textContent = `Feels like: ${parseInt(tempData.current.feelslike_f)}`;
+      dew_point.value = `${parseInt(tempData.current.dewpoint_f)}`;
+    }
+    cloud_cover.value = tempData.current.cloud
     hourlyForecast(tempData);
-    weatherIcon.src = `images/${iconFile}`;
+    // weatherIcon.src = `images/${iconFile}`;
+    weatherIcon.src = `https:${tempData.current.condition.icon}`;
     sugg.innerHTML = "";
     sugg.style.visibility = "hidden";
   } catch (error) {
@@ -393,23 +404,26 @@ btn.addEventListener("click", function () {
 });
 unitBtn.addEventListener("click", function () {
   if (unit === "C") {
-    tempDisplay.textContent = `${tempF}°`;
+    tempDisplay.textContent = `${tempF}°ᶠ`;
 
     highTemp.textContent = `H: ${maxF}°`;
 
     lowTemp.textContent = `L: ${minF}°`;
+    feels_like.textContent = `Feels like: ${Math.round(weatherData.current.feelslike_f)}°F`;
+dew_point.value = `${Math.round(weatherData.current.dewpoint_f)}°F`;
 
     unit = "F";
     hourlyForecast(weatherData);
 
     unitBtn.textContent = "°F";
   } else {
-    tempDisplay.textContent = `${tempC}°`;
+    tempDisplay.textContent = `${tempC}°ᶜ`;
 
     highTemp.textContent = `H: ${maxC}°`;
 
     lowTemp.textContent = `L: ${minC}°`;
-
+    feels_like.textContent = `Feels like: ${Math.round(weatherData.current.feelslike_c)}°C`;
+dew_point.value = `${Math.round(weatherData.current.dewpoint_c)}°C`;
     unit = "C";
     hourlyForecast(weatherData);
     unitBtn.textContent = "°C";
