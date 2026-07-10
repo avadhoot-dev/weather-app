@@ -23,6 +23,8 @@ const feels_like = document.querySelector(".feels-like");
 const dew_point = document.querySelector("#dew-point")
 const cloud_cover = document.querySelector("#cloud-cover")
 const hourlyContainer = document.querySelector(".hourly-container");
+const threeDayContainer = document.querySelector(".three-day-cards");
+
 let city = "";
 let tempC;
 let tempF;
@@ -187,9 +189,36 @@ async function hourlyForecast(tempData) {
     card.appendChild(temp);
     card.appendChild(rain);
     hourlyContainer.appendChild(card);
+
   }
 }
+function scrollHourly(direction) {
+  const container = document.querySelector(".hourly-container");
 
+  container.scrollBy({
+    left: direction * 500,
+    behavior: "smooth",
+  });
+}
+document.querySelector(".left-arrow").addEventListener("click", () => {
+  scrollHourly(-1);
+});
+
+document.querySelector(".right-arrow").addEventListener("click", () => {
+  scrollHourly(1);
+});
+
+//three day forecast
+
+async function threeDayforecast(tempData){
+  threeDayContainer.innerHTML = "";
+  tempData.forecast.forecastday.forEach( day => {
+    const card = doucment.createElement("div")
+    card.innerHTML = 
+    "<img</img>  "
+  })
+
+}
 // get weather func
 
 async function getWeather(lat, lon) {

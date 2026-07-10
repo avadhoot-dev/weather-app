@@ -28,7 +28,7 @@
       <div class="search-box">
         <div id="input-sec">
           <input
-            placeholder="Enter any loc, pincode"
+            placeholder="Enter any location, pincode"
             id="inp"
             onkeyup="betterfunc()"
           />
@@ -60,18 +60,17 @@
                 <p class="time"></p>
               </div>
             </div>
-           <div class="temp-section">
-    <div class="temp"></div>
-    <img class="weather-icon">
-</div>
+            <div class="temp-section">
+              <div class="temp"></div>
+              <img class="weather-icon" />
+            </div>
             <p class="condition"></p>
-                <p class="feels-like"></p>
-             <div class="high-low">
-            <p class="high-temp"></p>
-            <p class="low-temp"></p>
+            <p class="feels-like"></p>
+            <div class="high-low">
+              <p class="high-temp"></p>
+              <p class="low-temp"></p>
+            </div>
           </div>
-          </div>
-         
         </div>
 
         <div class="details-1">
@@ -119,19 +118,34 @@
           </div>
         </div>
       </div>
+      <div class="forecast-sec">
       <div class="hourly-forecast">
         <h3 class="def-info">🕓 Hourly Forecast</h3>
-        <div class="hourly-container"></div>
+        <div class="hourly-wrapper">
+          <button class="nav-arrow left-arrow">&#10094;</button>
+        <div class="hourly-container" id="hourlyContainer"></div>
+         <button class="nav-arrow right-arrow">&#10095;</button>
+        </div>
       </div>
-       
+
+      <div class="three-day-forecast">
+        <h3 class="def-info">3 Day Forecast</h3>
+        <div class="three-day-cards">
+          <!-- <div class="main-three-cards">
+            <p>Tomorrow</p>
+            <p>6 July</p>
+            <img src="images/cloud-cover.svg" alt="" class="small-icon">
+            <p>💧 81%</p>
+            <p>Rain</p>
+          </div> -->
+        </div>
+      </div>
+      </div>
     </div>
     <footer class="footer">
-      
-        <p>Stay Informed Stay Prepared | © All Rights Reserved</p>
-        
-          <p id="last-update"></p>
-      
-      
+      <p>Stay Informed Stay Prepared | © All Rights Reserved</p>
+
+      <p id="last-update"></p>
     </footer>
     <script type="module" src="JS/app.js"></script>
   </body>
