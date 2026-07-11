@@ -20,8 +20,8 @@ const highTemp = document.querySelector(".high-temp");
 const lowTemp = document.querySelector(".low-temp");
 const unitBtn = document.getElementById("unit-btn");
 const feels_like = document.querySelector(".feels-like");
-const dew_point = document.querySelector("#dew-point")
-const cloud_cover = document.querySelector("#cloud-cover")
+const dew_point = document.querySelector("#dew-point");
+const cloud_cover = document.querySelector("#cloud-cover");
 const hourlyContainer = document.querySelector(".hourly-container");
 const threeDayContainer = document.querySelector(".three-day-cards");
 
@@ -128,14 +128,10 @@ async function hourlyForecast(tempData) {
   hourlyContainer.innerHTML = "";
   const currentHour = new Date().getHours();
   const hours = [
-  ...tempData.forecast.forecastday[0].hour,
-  ...tempData.forecast.forecastday[1].hour,
-];
-  for (
-    let i = currentHour;
-    i < currentHour + 24;
-    i++
-  ) {
+    ...tempData.forecast.forecastday[0].hour,
+    ...tempData.forecast.forecastday[1].hour,
+  ];
+  for (let i = currentHour; i < currentHour + 24; i++) {
     let hour = hours[i];
     let card = document.createElement("div");
     card.classList.add("hr-card");
@@ -172,15 +168,15 @@ async function hourlyForecast(tempData) {
     rain.classList.add("hourly-rain");
     if (i === currentHour) {
       if (unit === "C") {
-        temp.textContent = `${parseInt(tempData.current.temp_c)}°`;
+        temp.textContent = `${Math.round(tempData.current.temp_c)}°`;
       } else {
-        temp.textContent = `${parseInt(tempData.current.temp_f)}°`;
+        temp.textContent = `${Math.round(tempData.current.temp_f)}°`;
       }
     } else {
       if (unit === "C") {
-        temp.textContent = `${parseInt(hour.temp_c)}°`;
+        temp.textContent = `${Math.round(hour.temp_c)}°`;
       } else {
-        temp.textContent = `${parseInt(hour.temp_f)}°`;
+        temp.textContent = `${Math.round(hour.temp_f)}°`;
       }
     }
     rain.textContent = `${hour.chance_of_rain}%`;
@@ -189,7 +185,6 @@ async function hourlyForecast(tempData) {
     card.appendChild(temp);
     card.appendChild(rain);
     hourlyContainer.appendChild(card);
-
   }
 }
 function scrollHourly(direction) {
@@ -200,25 +195,82 @@ function scrollHourly(direction) {
     behavior: "smooth",
   });
 }
-document.querySelector(".left-arrow").addEventListener("click", () => {
+document.querySelector(".hourly-left").addEventListener("click", () => {
   scrollHourly(-1);
 });
 
-document.querySelector(".right-arrow").addEventListener("click", () => {
+document.querySelector(".hourly-right").addEventListener("click", () => {
   scrollHourly(1);
 });
 
 //three day forecast
 
-async function threeDayforecast(tempData){
+async function threeDayforecast(tempData) {
   threeDayContainer.innerHTML = "";
-  tempData.forecast.forecastday.forEach( day => {
-    const card = doucment.createElement("div")
-    card.innerHTML = 
-    "<img</img>  "
-  })
+  tempData.forecast.forecastday.slice(1).forEach((day) => {
+    const card = document.createElement("div");
+    card.classList.add("main-three-cards");
+    let day_name = document.createElement("p");
+    let date = document.createElement("p");
+    let icon = document.createElement("img");
+    let temp = document.createElement("p");
+    let condition_text = document.createElement("p");
+    const weekDays = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
 
+    const dateObj = new Date(day.date);
+    const formattedDate = dateObj.toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+    });
+    day_name.textContent = weekDays[dateObj.getDay()];
+    date.textContent = formattedDate;
+    temp.textContent = `${Math.round(day.day.avgtemp_c)}°`;
+    condition_text.textContent = `${day.day.condition.text}`;
+    icon.src = `https:${day.day.condition.icon}`;
+    if (unit === "C") {
+      temp.textContent = `${Math.round(day.day.avgtemp_c)}°`;
+    } else {
+      temp.textContent = `${Math.round(day.day.avgtemp_f)}°`;
+    }
+    day_name.classList.add("forecast-day");
+    date.classList.add("forecast-date");
+    temp.classList.add("forecast-temp");
+    condition_text.classList.add("forecast-condition");
+    icon.classList.add("forecast-icon");
+
+    card.appendChild(day_name);
+    card.appendChild(date);
+    card.appendChild(icon);
+    card.appendChild(temp);
+    card.appendChild(condition_text);
+    threeDayContainer.appendChild(card);
+  });
 }
+
+function scrollForecast(direction) {
+  const container2 = document.querySelector(".three-day-cards");
+
+  container2.scrollBy({
+    left: direction * 300,
+    behavior: "smooth",
+  });
+}
+document.querySelector(".forecast-left").addEventListener("click", () => {
+  scrollForecast(-1);
+});
+
+document.querySelector(".forecast-right").addEventListener("click", () => {
+  scrollForecast(1);
+});
+
 // get weather func
 
 async function getWeather(lat, lon) {
@@ -232,6 +284,14 @@ async function getWeather(lat, lon) {
     weatherData = tempData;
     console.log(tempData);
     console.log(tempData.forecast.forecastday[0].hour);
+    console.table(
+      tempData.forecast.forecastday.map((day) => ({
+        date: day.date,
+        text: day.day.condition.text,
+        icon: day.day.condition.icon,
+        code: day.day.condition.code,
+      })),
+    );
     if (tempData.error) {
       showMessage(`⚠️ ${tempData.error.message}`);
       return;
@@ -258,15 +318,16 @@ async function getWeather(lat, lon) {
 
     displayCity.textContent = `${tempData.location.name}, ${tempData.location.region}`;
     conditionDisplay.textContent = tempData.current.condition.text;
-    if(unit === "C"){
-      feels_like.textContent = `Feels like: ${parseInt(tempData.current.feelslike_c)}°C`;
-      dew_point.value = `${parseInt(tempData.current.dewpoint_c)}°C`;
-    }else{
-      feels_like.textContent = `Feels like: ${parseInt(tempData.current.feelslike_f)}`;
-      dew_point.value = `${parseInt(tempData.current.dewpoint_f)}`;
+    if (unit === "C") {
+      feels_like.textContent = `Feels like: ${Math.round(tempData.current.feelslike_c)}°C`;
+      dew_point.value = `${Math.round(tempData.current.dewpoint_c)}°C`;
+    } else {
+      feels_like.textContent = `Feels like: ${Math.round(tempData.current.feelslike_f)}`;
+      dew_point.value = `${Math.round(tempData.current.dewpoint_f)}`;
     }
-    cloud_cover.value = tempData.current.cloud
+    cloud_cover.value = tempData.current.cloud;
     hourlyForecast(tempData);
+    threeDayforecast(tempData);
     // weatherIcon.src = `images/${iconFile}`;
     weatherIcon.src = `https:${tempData.current.condition.icon}`;
     sugg.innerHTML = "";
@@ -439,11 +500,12 @@ unitBtn.addEventListener("click", function () {
 
     lowTemp.textContent = `L: ${minF}°`;
     feels_like.textContent = `Feels like: ${Math.round(weatherData.current.feelslike_f)}°F`;
-dew_point.value = `${Math.round(weatherData.current.dewpoint_f)}°F`;
+    dew_point.value = `${Math.round(weatherData.current.dewpoint_f)}°F`;
+    
 
     unit = "F";
     hourlyForecast(weatherData);
-
+    threeDayforecast(weatherData);
     unitBtn.textContent = "°F";
   } else {
     tempDisplay.textContent = `${tempC}°ᶜ`;
@@ -452,9 +514,12 @@ dew_point.value = `${Math.round(weatherData.current.dewpoint_f)}°F`;
 
     lowTemp.textContent = `L: ${minC}°`;
     feels_like.textContent = `Feels like: ${Math.round(weatherData.current.feelslike_c)}°C`;
-dew_point.value = `${Math.round(weatherData.current.dewpoint_c)}°C`;
+    dew_point.value = `${Math.round(weatherData.current.dewpoint_c)}°C`;
+    
+
     unit = "C";
     hourlyForecast(weatherData);
+    threeDayforecast(weatherData);
     unitBtn.textContent = "°C";
   }
 });
