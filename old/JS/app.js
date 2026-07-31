@@ -284,14 +284,7 @@ async function getWeather(lat, lon) {
     weatherData = tempData;
     console.log(tempData);
     console.log(tempData.forecast.forecastday[0].hour);
-    console.table(
-      tempData.forecast.forecastday.map((day) => ({
-        date: day.date,
-        text: day.day.condition.text,
-        icon: day.day.condition.icon,
-        code: day.day.condition.code,
-      })),
-    );
+    
     if (tempData.error) {
       showMessage(`⚠️ ${tempData.error.message}`);
       return;
