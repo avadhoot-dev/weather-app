@@ -1,7 +1,7 @@
 # 🌦️ SkyCast — Weather Application
 
 <p align="center">
-  <strong>A modern, responsive weather application built with Vanilla JavaScript and WeatherAPI.</strong>
+  <strong>A modern, responsive weather application built with Vanilla JavaScript, WeatherAPI, and Geoapify.</strong>
 </p>
 
 <p align="center">
@@ -13,6 +13,7 @@
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
   <img src="https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
   <img src="https://img.shields.io/badge/WeatherAPI-0096FF?style=for-the-badge" alt="WeatherAPI">
+  <img src="https://img.shields.io/badge/Geoapify-1E88E5?style=for-the-badge" alt="Geoapify">
   <img src="https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white" alt="Leaflet">
   <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel">
 </p>
@@ -29,17 +30,17 @@
 
 ## 🚀 Live Demo
 
-**SkyCast:** https://skycast-avdhoot25.vercel.app/
+**SkyCast:** https://skycast-by-avadhoot.vercel.app/
 
 ---
 
 ## 📌 Overview
 
-SkyCast is a web-based weather application that retrieves weather information from **WeatherAPI** and presents it through a responsive dashboard.
+SkyCast is a web-based weather application that combines weather information with location-based services to provide a detailed weather dashboard.
 
-The application combines current weather conditions, detailed weather metrics, hourly forecasts, future forecasts, and an interactive map in a single interface.
+The application uses **WeatherAPI** for weather and forecast information and **Geoapify** for location/geocoding functionality. The interface presents current weather, detailed weather metrics, hourly forecasts, future forecasts, and an interactive map in one dashboard.
 
-The project is built with **HTML, CSS, and Vanilla JavaScript (ES6+)**.
+The project is built using **HTML, CSS, and Vanilla JavaScript (ES6+)**.
 
 ---
 
@@ -79,17 +80,14 @@ The project is built with **HTML, CSS, and Vanilla JavaScript (ES6+)**.
 - Dynamic weather icons
 - Precipitation information
 
-### 🗺️ Interactive Map
-- Selected location displayed on a map
+### 🗺️ Location & Map
+- Location search
+- Location/geocoding support through Geoapify
+- Selected location displayed on an interactive map
 - Zoom controls
 - Location marker
-- Leaflet map rendering
+- Leaflet-based map rendering
 - OpenStreetMap map tiles
-
-### 🔎 Location Search
-- Search by location
-- Search by pincode where supported by WeatherAPI
-- Weather data updates based on the searched location
 
 ### ⚙️ User Interface
 - Responsive dashboard
@@ -106,67 +104,63 @@ The project is built with **HTML, CSS, and Vanilla JavaScript (ES6+)**.
 | Technology | Purpose |
 |---|---|
 | **HTML5** | Application structure |
-| **CSS3** | Styling, layout and responsive design |
-| **JavaScript ES6+** | Application logic and API integration |
+| **CSS3** | Styling, layout, and responsive design |
+| **JavaScript ES6+** | Application logic, API integration, and DOM manipulation |
 | **WeatherAPI** | Weather and forecast data |
-| **Leaflet** | Interactive maps |
-| **OpenStreetMap** | Map tile data |
+| **Geoapify** | Location and geocoding services |
+| **Leaflet** | Interactive map |
+| **OpenStreetMap** | Map data/tiles |
 | **Git & GitHub** | Version control |
 | **Vercel** | Deployment |
 
 ---
 
-## 🔗 APIs, Libraries & External Dependencies
+## 🔗 APIs, Libraries & External Services
 
 ### WeatherAPI
 
-WeatherAPI provides the weather and forecast data used by SkyCast.
+WeatherAPI provides the weather and forecast data used by SkyCast, including current weather and forecast information.
 
-The application uses weather information such as:
+**Official website:** https://www.weatherapi.com/
 
-- Current conditions
-- Temperature
-- Feels-like temperature
-- Wind
-- Humidity
-- Visibility
-- UV index
-- Cloud cover
-- Forecast
-- Astronomy information
-- Location information
+### Geoapify
 
-Website: https://www.weatherapi.com/
+Geoapify provides location-based services used by SkyCast for location/geocoding functionality. Its platform provides APIs for geocoding, reverse geocoding, maps, places, and other location-related services.
+
+**Official website:** https://www.geoapify.com/
+
+**API documentation:** https://apidocs.geoapify.com/
 
 ### Leaflet
 
-Leaflet is used to display and control the interactive map.
+Leaflet is used to create and control the interactive map.
 
-Website: https://leafletjs.com/
+**Official website:** https://leafletjs.com/
 
 ### OpenStreetMap
 
 OpenStreetMap provides the map data displayed through Leaflet.
 
-Website: https://www.openstreetmap.org/
+**Official website:** https://www.openstreetmap.org/
 
 ---
 
-## 🔐 API Key & Environment Variables
+## 🔐 API Keys & Environment Variables
 
-SkyCast requires a WeatherAPI API key.
+SkyCast uses API keys for its external services.
 
-The API key should **not** be committed directly to GitHub.
+API keys should **not** be committed directly to GitHub.
 
-If the project uses an environment variable, configure it as:
+Example:
 
 ```env
-WEATHER_API_KEY=your_api_key_here
+WEATHER_API_KEY=your_weatherapi_key
+GEOAPIFY_API_KEY=your_geoapify_key
 ```
 
-For Vercel deployment, configure the variable in the project's Vercel environment settings.
+> Use the exact environment-variable names required by the current application code. The names above are examples for documentation purposes.
 
-> Use the exact environment variable name required by your current application code. If your code currently uses a different name, keep that name instead of changing it only for the README.
+For production deployment, configure the required environment variables through the Vercel project settings.
 
 ---
 
@@ -179,7 +173,8 @@ Install:
 - Git
 - Node.js
 - A modern web browser
-- A WeatherAPI account and API key
+- WeatherAPI API key
+- Geoapify API key
 - Vercel CLI if using `vercel dev`
 
 ### 1. Clone the repository
@@ -189,14 +184,15 @@ git clone https://github.com/avadhoot-dev/weather-app.git
 cd weather-app
 ```
 
-### 2. Configure your API key
+### 2. Configure API keys
 
-Set the WeatherAPI key using the environment-variable method used by the project.
+Configure the API keys using the environment-variable method used by the project.
 
 Example:
 
 ```env
-WEATHER_API_KEY=your_api_key_here
+WEATHER_API_KEY=your_weatherapi_key
+GEOAPIFY_API_KEY=your_geoapify_key
 ```
 
 ### 3. Start the local development server
@@ -207,7 +203,7 @@ If using Vercel CLI:
 vercel dev
 ```
 
-Open:
+Then open:
 
 ```text
 http://localhost:3000
@@ -218,38 +214,43 @@ http://localhost:3000
 ## 🧠 Application Flow
 
 ```text
-User
- │
- │ searches for a location
- ▼
-JavaScript
- │
- │ sends API request
- ▼
-WeatherAPI
- │
- │ returns JSON
- ▼
-Weather Data
- │
- │ processed by JavaScript
- ▼
-DOM Updates
- │
- ├── Current Weather
- ├── Weather Metrics
- ├── Hourly Forecast
- ├── Future Forecast
- └── Interactive Map
+                    User
+                     │
+                     ▼
+              Search Location
+                     │
+                     ▼
+              JavaScript Logic
+                │          │
+                │          │
+                ▼          ▼
+          Geoapify      WeatherAPI
+          Location      Weather Data
+           Data             │
+                │            │
+                └─────┬──────┘
+                      ▼
+                Data Processing
+                      │
+                      ▼
+                 DOM Updates
+                      │
+        ┌─────────────┼─────────────┐
+        ▼             ▼             ▼
+ Current Weather  Forecasts       Map
+        │             │             │
+        └─────────────┴─────────────┘
+                      ▼
+                SkyCast Dashboard
 ```
 
 ---
 
 ## 📁 Repository Structure
 
-Your repository currently contains an `old/` directory containing previous project files. The exact application filenames should be kept as they exist in your repository.
+The repository currently contains an `old/` directory containing previous project files kept for reference.
 
-A typical structure is:
+The main application structure can be represented as:
 
 ```text
 weather-app/
@@ -266,7 +267,7 @@ weather-app/
 └── README.md
 ```
 
-> Do not rename your existing files just to match this example. Update this section later if your final project structure differs.
+> Keep the actual filenames and directories used by the project. This section can be updated if the final structure changes.
 
 ---
 
@@ -295,9 +296,11 @@ Local Development
  Production Website
 ```
 
-Live application:
+**Live application:**  
+https://skycast-by-avadhoot.vercel.app/
 
-https://skycast-avdhoot25.vercel.app/
+**GitHub repository:**  
+https://github.com/avadhoot-dev/weather-app
 
 ---
 
@@ -322,15 +325,8 @@ Map attribution is displayed within the map interface as required by the respect
 ## 🔮 Future Improvements
 
 - [ ] Automatic weather data refresh
-- [ ] Weather alerts
-- [ ] Air Quality Index (AQI)
 - [ ] AI-powered weather analysis
-- [ ] Weather highlights and summaries
-- [ ] Improved location detection
-- [ ] Additional weather visualizations
 - [ ] More detailed weather statistics
-- [ ] Improved mobile experience
-- [ ] User location detection
 
 ---
 
@@ -346,6 +342,7 @@ This project provides practical experience with:
 - DOM manipulation
 - Dynamic UI rendering
 - Loading and error states
+- Location and geocoding APIs
 - Third-party JavaScript libraries
 - Interactive maps
 - API-driven frontend applications
@@ -357,7 +354,6 @@ This project provides practical experience with:
 
 ## 👨‍💻 Author
 
-**Avadhoot**
+**Avadhoot Shriwant**
 
 GitHub: https://github.com/avadhoot-dev
-
