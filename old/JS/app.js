@@ -1,4 +1,4 @@
-import { getWeatherIcon, debounce } from "./utility.js";
+import { debounce } from "./utility.js";
 
 let tempDisplay = document.querySelector(".temp");
 let windDisplay = document.querySelector("#wind");
@@ -24,6 +24,11 @@ const dew_point = document.querySelector("#dew-point");
 const cloud_cover = document.querySelector("#cloud-cover");
 const hourlyContainer = document.querySelector(".hourly-container");
 const threeDayContainer = document.querySelector(".three-day-cards");
+const dashboard = document.querySelector(".dashboard");
+const currentWeatherCard = document.querySelector(".container");
+const detailsCard = document.querySelector(".details-1");
+const hourlySection = document.querySelector(".hourly-forecast");
+const futureSection = document.querySelector(".three-day-forecast");
 
 let city = "";
 let tempC;
@@ -255,25 +260,85 @@ async function threeDayforecast(tempData) {
   });
 }
 
-function scrollForecast(direction) {
-  const container2 = document.querySelector(".three-day-cards");
+// loading state
 
-  container2.scrollBy({
-    left: direction * 300,
-    behavior: "smooth",
-  });
+function createHourlySkeletons() {
+  hourlyContainer.innerHTML = "";
+
+  for (let i = 0; i < 8; i++) {
+    const card = document.createElement("div");
+    card.classList.add("hr-card", "skeleton-card");
+    card.innerHTML = `
+      <span class="skeleton skeleton-time"></span>
+      <span class="skeleton skeleton-icon"></span>
+      <span class="skeleton skeleton-temp"></span>
+      <span class="skeleton skeleton-rain"></span>
+    `;
+    hourlyContainer.appendChild(card);
+  }
 }
-document.querySelector(".forecast-left").addEventListener("click", () => {
-  scrollForecast(-1);
-});
 
-document.querySelector(".forecast-right").addEventListener("click", () => {
-  scrollForecast(1);
-});
+function createFutureSkeletons() {
+  threeDayContainer.innerHTML = "";
+
+  for (let i = 0; i < 2; i++) {
+    const card = document.createElement("div");
+    card.classList.add("main-three-cards", "skeleton-card");
+    card.innerHTML = `
+      <span class="skeleton skeleton-day"></span>
+      <span class="skeleton skeleton-date"></span>
+      <span class="skeleton skeleton-icon"></span>
+      <span class="skeleton skeleton-temp"></span>
+      <span class="skeleton skeleton-condition"></span>
+    `;
+    threeDayContainer.appendChild(card);
+  }
+}
+
+function setLoadingState(isLoading) {
+  const cards = [
+    dashboard,
+    currentWeatherCard,
+    detailsCard,
+    hourlySection,
+    futureSection,
+  ];
+
+  cards.forEach((card) => card?.classList.toggle("is-loading", isLoading));
+
+  if (isLoading) {
+    displayCity.textContent = "Loading weather...";
+    tempDisplay.textContent = "";
+    conditionDisplay.textContent = "Fetching current conditions...";
+    feels_like.textContent = "";
+    highTemp.textContent = "";
+    lowTemp.textContent = "";
+
+    [
+      windDisplay,
+      humidDisplay,
+      uv_index,
+      pressure,
+      visibility,
+      rain_chance,
+      cloud_cover,
+      dew_point,
+    ].forEach((element) => {
+      element.value = "";
+    });
+
+    weatherIcon.removeAttribute("src");
+    last_update.textContent = "";
+
+    createHourlySkeletons();
+    createFutureSkeletons();
+  }
+}
 
 // get weather func
 
 async function getWeather(lat, lon) {
+  setLoadingState(true);
   const weaURL = `/api/weather?lat=${lat}&lon=${lon}`;
   try {
     let response = await fetch(weaURL);
@@ -284,13 +349,13 @@ async function getWeather(lat, lon) {
     weatherData = tempData;
     console.log(tempData);
     console.log(tempData.forecast.forecastday[0].hour);
-    
+
     if (tempData.error) {
       showMessage(`⚠️ ${tempData.error.message}`);
+      setLoadingState(false);
       return;
     }
-    let conditionCode = tempData.current.condition.code;
-    let iconFile = getWeatherIcon(conditionCode);
+
     tempC = tempData.current.temp_c;
     tempF = tempData.current.temp_f;
     maxC = tempData.forecast.forecastday[0].day.maxtemp_c;
@@ -325,7 +390,9 @@ async function getWeather(lat, lon) {
     weatherIcon.src = `https:${tempData.current.condition.icon}`;
     sugg.innerHTML = "";
     sugg.style.visibility = "hidden";
+    setLoadingState(false);
   } catch (error) {
+    setLoadingState(false);
     showMessage(`⚠️ Error: ${error.message}`);
   }
 }
@@ -333,6 +400,7 @@ async function getWeather(lat, lon) {
 // get curr loc data
 
 async function getCurrentLocation() {
+  setLoadingState(true);
   navigator.geolocation.getCurrentPosition(
     function (position) {
       const lat = position.coords.latitude;
@@ -341,6 +409,7 @@ async function getCurrentLocation() {
       getWeather(lat, lon);
     },
     function () {
+      setLoadingState(false);
       showMessage("⚠️ Unable to get location");
     },
   );
@@ -494,7 +563,6 @@ unitBtn.addEventListener("click", function () {
     lowTemp.textContent = `L: ${minF}°`;
     feels_like.textContent = `Feels like: ${Math.round(weatherData.current.feelslike_f)}°F`;
     dew_point.value = `${Math.round(weatherData.current.dewpoint_f)}°F`;
-    
 
     unit = "F";
     hourlyForecast(weatherData);
@@ -508,7 +576,6 @@ unitBtn.addEventListener("click", function () {
     lowTemp.textContent = `L: ${minC}°`;
     feels_like.textContent = `Feels like: ${Math.round(weatherData.current.feelslike_c)}°C`;
     dew_point.value = `${Math.round(weatherData.current.dewpoint_c)}°C`;
-    
 
     unit = "C";
     hourlyForecast(weatherData);
